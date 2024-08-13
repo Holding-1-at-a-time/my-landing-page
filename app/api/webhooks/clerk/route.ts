@@ -48,83 +48,31 @@ export default async function POST(req: Request) {
     }
 
     const eventType = evt.type;
+    const eventData = evt.data;
 
-    if (eventType === 'user.created') {
-        const { id, email_addresses, username } = evt.data;
-        const email = email_addresses[0]?.email_address;
-        await createUser({ id, email, username });
-    }
+    const eventHandlers = {
+        'user.created': createUser,
+        'user.updated': updateUser,
+        'user.deleted': deleteUser,
+        'organization.created': createOrganization,
+        'organization.updated': updateOrganization,
+        'organization.deleted': deleteOrganization,
+        'role.created': createRole,
+        'role.updated': updateRole,
+        'role.deleted': deleteRole,
+        'sms.created': createSms,
+        'organizationInvitation.created': createOrganizationInvitation,
+        'organizationInvitation.accepted': acceptOrganizationInvitation,
+        'organizationInvitation.revoked': revokeOrganizationInvitation,
+        'permission.updated': updatePermissions,
+        'permission.deleted': deletePermissions,
+    };
 
-    if (eventType === 'user.updated') {
-        const { id, email_addresses, username } = evt.data;
-        const email = email_addresses[0]?.email_address;
-        await updateUser({ id, email, username });
-    }
+    const eventHandler = eventHandlers[eventType];
 
-    if (eventType === 'user.deleted') {
-        const { id } = evt.data;
-        await deleteUser({ id });
+    if (eventHandler) {
+        await eventHandler(eventData);
     }
-
-    if (eventType === 'organization.created') {
-        const { id, name, slug } = evt.data;
-        await createOrganization({ id, name, slug });
-    }
-
-    if (eventType === 'organization.updated') {
-        const { id, name, slug } = evt.data;
-        await updateOrganization({ id, name, slug });
-    }
-
-    if (eventType === 'organization.deleted') {
-        const { id } = evt.data;
-        await deleteOrganization(id);
-    }
-
-    if (eventType === 'role.created') {
-        const { id, name, object, permissions } = evt.data;
-        await createRole({ id, name, object, permissions });
-    }
-
-    if (eventType === 'role.updated') {
-        const { id, name, object, permissions } = evt.data;
-        await updateRole({ id, name, object, permissions });
-    }
-
-    if (eventType === 'role.deleted') {
-        const { id } = evt.data;
-        await deleteRole({ id });
-    }
-
-    if (eventType === 'sms.created') {
-        const { delivered_by_clerk, from_phone_number, id, message, object, phone_number_id, slug, status, to_phone_number, user_id } = evt.data;
-        await createSms({ delivered_by_clerk, from_phone_number, id, message, object, phone_number_id, slug, status, to_phone_number, user_id });
-    }
-
-    if (eventType === 'organizationInvitation.created') {
-        const { created_at, email_address, id, object, organization_id, role, status, updated_at } = evt.data;
-        await createOrganizationInvitation({ created_at, email_address, id, object, organization_id, role, status, updated_at });
-    }
-
-    if (eventType === 'organizationInvitation.accepted') {
-        const { created_at, email_address, id, object, organization_id, role, status, updated_at } = evt.data;
-        await acceptOrganizationInvitation({ created_at, email_address, id, object, organization_id, role, status, updated_at });
-    }
-
-    if (eventType === 'organizationInvitation.revoked') {
-        const { created_at, email_address, id, object, organization_id, role, status, updated_at } = evt.data;
-        await revokeOrganizationInvitation({ created_at, email_address, id, object, organization_id, role, status, updated_at });
-    }
-
-    if (eventType === 'permission.updated') {
-        const { created_at, description, id, name, object, type, updated_at } = evt.data;
-        await updatePermissions({ created_at, description, id, name, object, type, updated_at });
-    }
-    
-    if (eventType === 'permission.deleted') {
-        const { deleted, id, object } = evt.data;
-        await deletePermissions({ deleted, id, object });
-    } 
 
     return new Response('', { status: 200 });
 }

@@ -3,13 +3,12 @@
 
 import { hasRole } from "@/utils/auth";
 import { clerkClient } from "@clerk/nextjs/server";
-import { Role } from "@/types/auth";
 import { logger } from "@/utils/logger";
 import { z } from "zod";
 
 const setRoleSchema = z.object({
     id: z.string().min(1),
-    role: z.enum(['org:admin', 'org:clients', 'org:manager_organization', 'org:member', 'org:non_member'])
+    Role : z.enum(['org:admin', 'org:clients', 'org:manager_organization', 'org:member', 'org:non_member'])
 });
 
 export async function setRole(formData: FormData) {

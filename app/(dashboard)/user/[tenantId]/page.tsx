@@ -1,5 +1,4 @@
-// app/(dashboard)/user/profile/page.tsx
-import { UserProfileForm } from '@/components/user/UserProfileForm'
+import { UserProfileForm } from '../../../../components/users/UserProfileForm';
 
 export default function UserProfilePage() {
     return (

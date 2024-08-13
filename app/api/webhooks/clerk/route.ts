@@ -6,7 +6,7 @@ import { createUser, updateUser, deleteUser } from '@/convex/users';
 import { createOrganization, updateOrganization, deleteOrganization } from '@/convex/organizations';
 import { createSms } from '@/convex/sms';
 import { updatePermissions, deletePermissions } from '@/convex/permissions';
-import { revokeOrganizationInvitation, acceptedOrganizationInvitation, acceptedOrganizationInvitation } from '@/convex/OrganizationInvitation';
+import { revokeOrganizationInvitation, acceptOrganizationInvitation, createOrganizationInvitation } from '@/convex/OrganizationInvitation';
 
 
 export default async function POST(req: Request) {
@@ -103,12 +103,12 @@ export default async function POST(req: Request) {
 
     if (eventType === 'organizationInvitation.created') {
         const { created_at, email_address, id, object, organization_id, role, status, updated_at } = evt.data;
-        await createdOrganizationInvitation({ created_at, email_address, id, object, organization_id, role, status, updated_at });
+        await createOrganizationInvitation({ created_at, email_address, id, object, organization_id, role, status, updated_at });
     }
 
     if (eventType === 'organizationInvitation.accepted') {
         const { created_at, email_address, id, object, organization_id, role, status, updated_at } = evt.data;
-        await acceptedOrganizationInvitation({ created_at, email_address, id, object, organization_id, role, status, updated_at });
+        await acceptOrganizationInvitation({ created_at, email_address, id, object, organization_id, role, status, updated_at });
     }
 
     if (eventType === 'organizationInvitation.revoked') {

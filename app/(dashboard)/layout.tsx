@@ -1,25 +1,28 @@
 // app/(dashboard)/layout.tsx
-import { SignedIn, SignedOut, RedirectToSignIn, OrganizationSwitcher } from '@clerk/nextjs'
+import { SignedIn, SignedOut, RedirectToSignIn, OrganizationSwitcher, ClerkLoading, Protect } from '@clerk/nextjs'
 import UserRoleInfo from '@/components/UserRoleInfo';
 import { Suspense } from 'react';
-import Loading from '@/components/Loading';
 
 export default function DashboardLayout({
     children,
-}: {
+}: Readonly<{
     children: React.ReactNode
-}) {
+}>) {
     return (
         <>
             <SignedIn>
                 <div>
                     <header>
                         <OrganizationSwitcher />
-                        <Suspense fallback={<Loading />}>
+                        <Suspense fallback={<ClerkLoading />}>
                             <UserRoleInfo />
                         </Suspense>
                     </header>
-                    <main>{children}</main>
+                    <clerkLoaded>
+                        <Protect>
+                            <main>{children}</main>
+                        </Protect>
+                    </clerkLoaded>
                 </div>
             </SignedIn>
             <SignedOut>

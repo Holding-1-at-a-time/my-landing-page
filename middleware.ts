@@ -1,6 +1,6 @@
-// middleware.ts
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { React } from "react";
 import { NextResponse } from "next/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";     
 import { hasPermission, hasRole } from "./utils/auth";
 import { logger } from "@/utils/logger";
 

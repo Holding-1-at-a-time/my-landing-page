@@ -1,7 +1,6 @@
 // utils/auth.ts
 import { auth } from "@clerk/nextjs/server";
 import { Role, Permission, CustomJwtSessionClaims } from "@/types/auth";
-import { logger } from "@/utils/logger";
 
 const rolePermissions: Record<Role, Permission[]> = {
     'org:admin': [

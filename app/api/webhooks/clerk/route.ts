@@ -9,7 +9,7 @@ import { updatePermissions, deletePermissions } from '@/convex/permissions';
 import { revokeOrganizationInvitation, acceptedOrganizationInvitation, acceptedOrganizationInvitation } from '@/convex/OrganizationInvitation';
 
 
-export async function POST(req: Request) {
+export default async function POST(req: Request) {
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
     if (!CLERK_WEBHOOK_SECRET) {

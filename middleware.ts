@@ -3,7 +3,6 @@ import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { hasPermission, hasRole } from "./utils/auth";
 import { logger } from "@/utils/logger";
-import { rateLimit } from "@/utils/rateLimit";
 
 const publicRoutes = ["/", "/sign-in(.*)", "/sign-up(.*)", "/api/webhooks/clerk"];
 
@@ -33,15 +32,5 @@ export default clerkMiddleware({
             logger.warn(`User ${auth.userId} attempting unauthorized access to client area`);
             return NextResponse.redirect(new URL('/unauthorized', req.url));
         }
-
-        // Rate limiting
-        const ip = req.ip ?? '127.0.0.1'
-        const { success } = await rateLimit(ip)
-        if (!success) {
-            logger.warn(`Rate limit exceeded for IP ${ip}`);
-            return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 })
-        }
-
-        // Add more RBAC checks as needed
     },
 });

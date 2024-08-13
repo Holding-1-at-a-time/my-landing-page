@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["occured", "svix"]
+  "cSpell.words": ["occured", "svix"],
+  "search.useParentIgnoreFiles": true
 }
